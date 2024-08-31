@@ -1,0 +1,145 @@
+{-# START_FILE stack.yaml #-}
+resolver:
+  url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/22/33.yaml
+
+packages:
+  - .
+  - bench
+  - test
+  - scratch
+
+install-ghc: true
+
+{-# START_FILE package.yaml #-}
+name: {{name}}
+
+dependencies:
+  - base >= 4.17 && < 5
+
+library:
+  source-dirs: src
+
+{-# START_FILE src/Lib.hs #-}
+module Lib where
+
+fun :: (Num a) => a -> a -> a
+fun = (+)
+
+{-# START_FILE bench/package.yaml #-}
+name: bench
+
+dependencies:
+  - {{name}}
+  - base
+  - criterion
+
+ghc-options:
+  - -rtsopts
+  - -threaded
+  - -O2
+  - -fforce-recomp
+
+executables:
+  bench:
+    main: Bench.hs
+
+{-# START_FILE bench/Bench.hs #-}
+import Criterion.Main
+
+-- Dummy -----------------------------------------------------------------------
+
+dummy = bench "addition" $ whnf (+2) 2
+
+-- Main ------------------------------------------------------------------------
+
+main = defaultMain [dummy]
+
+{-# START_FILE test/package.yaml #-}
+name: tests
+
+dependencies:
+  - {{name}}
+  - base
+  - tasty
+  - tasty-hunit
+  - tasty-quickcheck
+
+ghc-options:
+  - -rtsopts
+  - -threaded
+  - -O2
+  - -fforce-recomp
+
+executables:
+  tests:
+    main: Test.hs
+
+tests:
+  test-main:
+    main: Test.hs
+
+{-# START_FILE test/Test.hs #-}
+import Test.Tasty
+import Test.Tasty.HUnit
+
+-- Dummy -----------------------------------------------------------------------
+
+dummy :: TestTree
+dummy = testCase "dummy" $ assertEqual "two plus two equals four" (2 + 2) 4
+
+-- Main ------------------------------------------------------------------------
+
+main = defaultMain dummy
+
+{-# START_FILE scratch/package.yaml #-}
+name: scratch
+
+dependencies:
+  - {{name}}
+  - base
+
+executables:
+  ex00:
+    main: Ex00_Empty.hs
+
+{-# START_FILE scratch/Ex00_Empty.hs #-}
+module Main where
+
+main :: IO ()
+main = putStrLn "empty"
+
+{-# START_FILE .gitignore #-}
+# Created by https://www.toptal.com/developers/gitignore/api/haskell
+# Edit at https://www.toptal.com/developers/gitignore?templates=haskell
+
+### Haskell ###
+dist
+dist-*
+cabal-dev
+*.o
+*.hi
+*.hie
+*.chi
+*.chs.h
+*.dyn_o
+*.dyn_hi
+.hpc
+.hsenv
+.cabal-sandbox/
+cabal.sandbox.config
+*.prof
+*.aux
+*.hp
+*.eventlog
+.stack-work/
+cabal.project.local
+cabal.project.local~
+.HTF/
+.ghc.environment.*
+
+# End of https://www.toptal.com/developers/gitignore/api/haskell
+
+{-# START_FILE README.md #-}
+# {{name}}
+
+This project was bootstrapped with the wgl template.
