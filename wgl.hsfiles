@@ -162,10 +162,12 @@ import Criterion.Main
 
 -- Dummy -----------------------------------------------------------------------
 
-dummy = bench "addition" $ whnf (+2) 2
+dummy :: Benchmark
+dummy = bench "addition" $ whnf (+2) (2 :: Integer)
 
 -- Main ------------------------------------------------------------------------
 
+main :: IO ()
 main = defaultMain [dummy]
 
 {-# START_FILE test/package.yaml #-}
@@ -201,10 +203,11 @@ import Test.Tasty.HUnit
 -- Dummy -----------------------------------------------------------------------
 
 dummy :: TestTree
-dummy = testCase "dummy" $ assertEqual "two plus two equals four" (2 + 2) 4
+dummy = testCase "dummy" $ assertEqual "two plus two equals four" (2 + 2) (4 :: Integer)
 
 -- Main ------------------------------------------------------------------------
 
+main :: IO ()
 main = defaultMain dummy
 
 {-# START_FILE scratch/package.yaml #-}
