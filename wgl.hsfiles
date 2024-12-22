@@ -20,7 +20,7 @@ dependencies:
   - base >= 4.17 && < 5
 
 ghc-options:
-  - -W
+  - -Wall
   - -Werror
 
 library:
@@ -150,7 +150,7 @@ ghc-options:
   - -threaded
   - -O2
   - -fforce-recomp
-  - -W
+  - -Wall
   - -Werror
 
 executables:
@@ -183,7 +183,7 @@ ghc-options:
   - -threaded
   - -O2
   - -fforce-recomp
-  - -W
+  - -Wall
   - -Werror
 
 executables:
@@ -211,7 +211,7 @@ main = defaultMain dummy
 name: scratch
 
 ghc-options:
-  - -W
+  - -Wall
   - -Werror
 
 dependencies:
